@@ -1,0 +1,61 @@
+
+	
+
+		<!doctype html>
+		<html lang="en" ng-app="InVision">
+		<head>
+			<meta charset="utf-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1" />
+			<title>
+				Connected
+			</title>
+			<link rel="icon" type="image/png" href="./public/img/favicon-16x16.png" sizes="16x16" />
+			<link rel="icon" type="image/png" href="./public/img/favicon-32x32.png" sizes="32x32" />
+			<link rel="stylesheet" type="text/css" href="./public/fonts/font-face.css" />
+			<link rel="stylesheet" type="text/css" href="./public/dist/css/main.css" />
+			<script type="text/javascript">
+				(function() {
+
+					// In Windows Explorer, double-clicking on a ZIP file doesn't extract
+					// the .zip file, it just "explores" it. If a file within the ZIP is
+					// then opened, any embedded paths are broken. Let's alert the user
+					// to this fact if the URL looks liks it contains a ".zip" in it.
+					if ( window.location.href.search( /\.zip\b/i ) >= 0 ) {
+
+						alert(
+							"It looks like you're viewing this prototype from within a zip archive file (.zip). " +
+							"This will prevent some of the linked files from loading properly. " +
+							"Please extract the zip file contents and then open the extracted \"index.html\" file."
+						);
+
+					}
+
+				})();
+			</script>
+		</head>
+		<body>
+
+			<!-- BEGIN: Pre-boostrap Loading. -->
+			<div id="pre-boostrap-loading" class="pre-boostrap-loading">
+				<div class="pre-boostrap-loading__content">
+					<h1 class="pre-boostrap-loading__title">
+						InVision
+					</h1>
+					<p class="pre-boostrap-loading__message">
+						Loading your prototype...
+					</p>
+				</div>
+			</div>
+			<!-- END: Pre-boostrap Loading. -->
+
+			<inv-m0-sprite-sheet aria-hidden="true" hidden></inv-m0-sprite-sheet>
+			<inv-m1-app-shell></inv-m1-app-shell>
+
+			<script type="text/javascript" src="./public/dist/js/vendor.js"></script>
+			<script type="text/javascript" src="./public/dist/js/invision.js"></script>
+			<script type="text/javascript" src="./public/config.js"></script>
+
+		</body>
+		</html>
+
+	

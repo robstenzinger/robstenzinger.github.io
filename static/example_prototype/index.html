@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="copyright" content="Copyright © 2013 Adobe Systems Incorporated. All rights reserved.
+
+ Licensed under the Apache License, Version 2.0 (the “License”);
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an “AS IS” BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.">
+        <title>Prototype</title>
+        <script src="js/snap.svg-min.js"></script>
+        <script>
+
+
+        window.onload = function () {
+
+        //
+        // COLORS
+        //
+
+        // products/items
+        var menuItemBGColor = "#FFFFFF";
+        var menuItemOutlineColor = "#FFFFFF";
+        var menuItemBGHighlightColor = "green";
+        var menuItemOutlineHighlightColor = "green";
+        var menuItemBGSelectedColor = "red";
+        var menuItemOutlineSeletedColor = "red";
+
+        // menu items
+        var closetShelfBGColor = "#333333";
+        var closetShelfOutlineColor = null;
+        var closetShelfBGSelectedColor = "green";
+
+        //
+        // ANIMATIONS
+        //
+        function zoomInOut(element){
+            element.animate( { transform: 's1.2,1.2' }, 250,  function(){
+                console.log("animation 1 complete");
+
+                element.animate( { transform: 's1,1' }, 250,  function(){
+                    console.log("animation 2 complete");
+                });
+
+            });
+        }
+        function snapFromLeft(element){
+           element.transform("t-300,0");
+           element.animate({ transform: 't0,0 s1,1' }, 250);
+        }
+        function snapFromRight(element){
+           element.transform("t300,0");
+           element.animate({ transform: 't0,0 s1,1' }, 250);
+        }
+        function fadeInFromBottom(element){
+           element.transform("t0,300");
+           element.attr({opacity: "0"});
+           element.animate({ transform: 't0,0 s1,1', opacity: '1' }, 500);
+        }
+
+        function twistAndBack(element){
+            zoomInOut(element);
+            element.animate( { transform: 's0.9,0.8 r5' }, 100);
+        }
+
+
+        // specific animations for a given screen...
+
+        function showCloset(layout){
+           var leftMenu = layout.select("#menu-look");
+           var paperDoll = layout.select("#paperdoll");
+           var closet = layout.select("#menu-closet");
+
+           snapFromLeft(leftMenu);
+           snapFromRight(closet);
+           fadeInFromBottom(paperDoll);
+        }
+
+        // --------------------------------------
+        //
+        // Load the scene
+        //
+        // --------------------------------------
+
+        var layout = Snap.select("#look-paperdoll-closet");
+
+        showCloset(layout);
+
+        //
+        // head
+        //
+        var head = layout.select("#head");
+
+        var face = head.select("#face");
+        face.click(function () {
+            zoomInOut(face);
+        });
+        var earLeft = head.select("#ear-left");
+        earLeft.click(function () {
+            zoomInOut(earLeft);
+            zoomInOut(earRight);
+        });
+        var earRight = head.select("#ear-right");
+        earRight.click(function () {
+            zoomInOut(earLeft);
+            zoomInOut(earRight);
+        });
+        var hat = head.select("#hat");
+        hat.click(function () {
+            zoomInOut(hat);
+        });
+        var neck = head.select("#neck");
+        neck.click(function () {
+            zoomInOut(neck);
+        });
+
+
+        //
+        // torso
+        //
+        var torso = layout.select("#torso");
+        //
+        // left
+        var leftArm = torso.select("#arm-left");
+        var leftHand = leftArm.select("#arm-left-hand");
+        var leftWrist = leftArm.select("#arm-left-wrist");
+        leftHand.click(function () {
+            console.log("clicked left hand!!!");
+            zoomInOut(leftWrist);
+            zoomInOut(leftHand);
+        });
+
+        //
+        // right
+        var rightArm = torso.select("#arm-right");
+        var rightHand = rightArm.select("#arm-right-hand");
+        var rightWrist = rightArm.select("#arm-right-wrist");
+        rightHand.click(function () {
+            console.log("clicked right hand!!!");
+            zoomInOut(rightWrist);
+            zoomInOut(rightHand);
+        });
+
+        //
+        //chest
+        var chest = torso.select("#chest");
+        //arms
+        var rightArmLower = rightArm.select("#arm-right-lower");
+        var rightArmUpper = rightArm.select("#arm-right-upper");
+        var leftArmLower = leftArm.select("#arm-left-lower");
+        var leftArmUpper = leftArm.select("#arm-left-upper");
+
+        //torso clicks...
+        function zoomFullChest(){
+            zoomInOut(leftWrist);
+            zoomInOut(leftHand);
+            zoomInOut(rightWrist);
+            zoomInOut(rightHand);
+
+            zoomInOut(chest);
+
+            zoomInOut(rightArmLower);
+            zoomInOut(rightArmUpper);
+            zoomInOut(leftArmLower);
+            zoomInOut(leftArmUpper);
+        }
+        chest.click(function () {
+            zoomFullChest();
+        });
+        rightArmLower.click(function () {
+            zoomFullChest();
+        });
+        rightArmUpper.click(function () {
+            zoomFullChest();
+        });
+        leftArmLower.click(function () {
+            zoomFullChest();
+        });
+        leftArmUpper.click(function () {
+            zoomFullChest();
+        });
+
+
+        //
+        // lower body - legs and feet
+        //
+        var legs = layout.select("#legs");
+        legs.click(function () {
+            zoomInOut(legs);
+        });
+
+        var feet = layout.select("#feet");
+        feet.click(function () {
+            zoomInOut(feet);
+        });
+
+
+
+        //
+        //
+        // LEFT MENU
+        //
+        //
+
+        var lookMenu = layout.select("#menu-look");
+
+        var menuItems = {};
+        var numericAttr = 0;
+        for(attr in lookMenu.node.children){
+
+            if(lookMenu.node.children["item" + numericAttr]
+            && lookMenu.node.children["item" + numericAttr].id
+            && lookMenu.node.children["item" + numericAttr].id.indexOf("item") > -1){
+
+                var currentItem = layout.select("#item" + numericAttr);
+                currentItem.attr({fill: menuItemBGColor});
+
+
+                // TODO fill item with product image
+
+
+                // store a unique ref... bind events to that
+                menuItems["item" + numericAttr] = currentItem;
+                menuItems["item" + numericAttr].click(function(){
+                    // this.attr({fill:"#FFFFFF"});
+                    twistAndBack(this);
+                });
+
+            }
+
+            numericAttr += 1;
+
+        }
+
+        //
+        //
+        // CLOSET
+        //
+        //
+
+
+        var closetMenu = layout.select("#menu-closet");
+
+        var closetItems = {};
+        var shelfNumber = 1;
+        var totalShelves = 4;
+        var itemNumber = 0;
+
+        // close screen button
+        var closeCloset = closetMenu.select("#close-closet");
+        closeCloset.click(function(){
+            twistAndBack(this);
+            alert("close this screen... todo...");
+        });
+
+        //
+        // loop through shelves
+        //
+        for(var i=0; i<totalShelves; i++){
+
+            var currentShelfNumber = i+1;
+
+            var currentShelf = layout.select("#shelf" + currentShelfNumber);
+            // closetMenu.node.children["shelf" + currentShelfNumber]
+            currentShelf.attr({fill: closetShelfBGColor});
+            currentShelf.click(function(){
+                twistAndBack(this);
+            });
+
+
+            var itemsPerShelf = 4;
+            //
+            // loop through items on the shelf
+            //
+                for(var currentShelfItemNumber = 1; currentShelfItemNumber < itemsPerShelf+1; currentShelfItemNumber++){
+
+                    if(closetMenu.node.children["s" + currentShelfNumber + "i" + currentShelfItemNumber]
+                    && closetMenu.node.children["s" + currentShelfNumber + "i" + currentShelfItemNumber].id
+                    && closetMenu.node.children["s" + currentShelfNumber + "i" + currentShelfItemNumber].id.indexOf("s" + currentShelfNumber + "i" + currentShelfItemNumber) > -1){
+
+                        var currentItem = layout.select("#s" + currentShelfNumber + "i" + currentShelfItemNumber);
+                        currentItem.attr({fill: menuItemBGColor});
+
+                        // TODO fill item with product image
+
+                        currentItem.click(function(){
+                            twistAndBack(this);
+                        });
+
+                    }
+
+                }
+
+            // }
+
+        }
+
+        //
+        //
+        // ...
+        //
+        //
+
+        //
+        // example: adding dynamic text...
+        //
+        // var t1 = layout.text(50, 50, "Snap");
+        // t1.attr({textpath: "M10,10 L100,100"});
+
+
+        };
+        </script>
+    </head>
+    <body>
+
+<svg version="1.1" id="look-paperdoll-closet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     x="0px" y="0px" viewBox="0 0 612 792" enable-background="new 0 0 612 792" xml:space="preserve">
+<g id="menu-closet">
+    <polygon id="background-my-closet" opacity="0.91" fill="#818991" enable-background="new    " points="612,792 350.9,775.1 
+        350.9,37.3 612,0    "/>
+    <text id="label-my-closet" transform="matrix(1 0 0 1 432.9742 760.3864)" font-family="'HelveticaNeue-Bold'" font-size="35.64">my closet</text>
+    <g id="close-closet">
+        <polygon fill="#D1D3D4" points="584.7,19.6 599.5,39.9 593,42.7 577.2,18.9       "/>
+        <polygon fill="#D1D3D4" points="599.4,23.2 582.3,41.6 574.6,42.7 594.5,18.9         "/>
+    </g>
+    <polygon id="shelf1" fill="#818991" points="670.7,171 412.3,188.1 377.8,148.2 432.9,109.7 632.3,98.3    "/>
+    <rect id="s1i1" x="436" y="88.3" fill="#D1D3D4" width="48.2" height="48.2"/>
+    <rect id="s1i2" x="497.3" y="88.4" fill="#D1D3D4" width="48.2" height="48.2"/>
+    <rect id="s1i3" x="557.8" y="88.4" fill="#D1D3D4" width="48.2" height="48.2"/>
+    <polygon id="shelf2" fill="#6DC065" points="652.7,301.9 458.5,307 386.8,286.7 414.9,240.5 614.3,229.2   "/>
+    <rect id="s2i1" x="409" y="218.2" fill="#D1D3D4" width="48.2" height="48.2"/>
+    <rect id="s2i2" x="470.3" y="218.3" fill="#D1D3D4" width="48.2" height="48.2"/>
+    <rect id="s2i3" x="530.8" y="218.3" fill="#D1D3D4" width="48.2" height="48.2"/>
+    <polygon id="shelf3" fill="#6DC065" points="652.7,438.2 458.5,443.3 386.8,425.9 397.4,399.3 614.3,365.5     "/>
+    <rect id="s3i1" x="441.9" y="355.5" fill="#D1D3D4" width="48.2" height="48.2"/>
+    <rect id="s3i2" x="503.3" y="355.6" fill="#D1D3D4" width="48.2" height="48.2"/>
+    <polygon id="shelf4" fill="#818991" points="656,604.7 461.9,609.7 363.1,603.9 418.2,543.3 617.6,531.9   "/>
+    <rect id="s4i1" x="429.4" y="522.4" fill="#D1D3D4" width="48.2" height="48.2"/>
+    <rect id="s4i2" x="490.8" y="522.6" fill="#D1D3D4" width="48.2" height="48.2"/>
+    <rect id="s4i3" x="551.3" y="522.6" fill="#D1D3D4" width="48.2" height="48.2"/>
+</g>
+<g id="paperdoll">
+    <path id="paperdoll-background" fill="#818991" d="M338,714.6l-4.4,0.6l5.1-154.5l-4.9,2.6l2.5-1.9l1.5-173.9l-22.5,21.1l16.8-25.8
+        l-7.4,0.3l5.1-11.6l-11.5-0.2l16.5-124.4l2.9,121.8l2.5-1L343,474l0,0v7.5l-2-0.2l0.2,45.1h46.9l-6.7-40.4l-1.3-0.2l-2.4-22.7
+        l-2.5,0.8l7.1-112.6l1.5-0.6l-0.9-8.9l0.2-3.7l-0.6,0.3l-10-96.3l-36.1-6.6l1-7.6l-32.4,0.3l10.8-14.4l-14.4-0.1
+        c2.1-2.5,4.1-5.6,5.8-9.4c0.4-1,0.8-2,1.2-3h15.9l-1.5-21.4l-8.8-11.3c0.5-11.8-2-20.5-7.6-26.8c-0.2-0.2-0.4-0.4-0.5-0.6l12.7-0.2
+        l-12.4-36.2l-44.2,6.1l-21,31.8l11.1-0.2c-0.1,0.1-0.2,0.2-0.3,0.3c-6.2,6.7-9,16.4-8.4,28.7l-7.9,10.1l-0.2,20.3h13.9
+        c1.8,4.3,4.1,8.3,7.2,11.8l-21.8-0.1l16.2,15.2l-32.5,0.3l0.8,6.2l-34.1,6.2l-10,96.3l-0.7-0.4l0.3,4.3l-0.9,8.4l1.4,0.6l7.1,112.6
+        l-2.5-0.8l-2.4,22.8l-1.4,0.2l-6.6,40.3h46.9l0.1-45l-1.9,0.2v-7.5h-0.1l2.8-106.3l2.6,1l2.6-108.2l14.4,109.9l-8-0.1l2.5,17.5
+        l-3.1,0.1l14.4,21.3l-23-21.7l1.5,173.9l2.7,2l-5.2-2.7l5.3,161.6v13.4h0.1l-12.2,40.1l64.4,7.7L266,734.2l-2.1-0.4l-2.8-9.7
+        l1.5-131.9l0.6,0.4l15.4-126.9L294,593.3l0.6-0.4l1.5,127.5l-2.3,0.3v18.6l-9.9,46.1l59.2-4.8l-6.6-50.2L338,714.6z"/>
+    <g id="head">
+        <polygon id="neck" fill="#CFD6D3" points="250.3,221 302,221.2 294.8,230.9 261.2,231.3       "/>
+        <path id="face" fill="#CFD6D3" d="M249.3,174.1C247.6,152.6,257,140,279,140c22.2,0,29.3,12.5,27.1,34c-1.9,18.4-5,44.2-27.1,44.2
+            C257,218.1,251.3,197.5,249.3,174.1z"/>
+        <polygon id="hat" fill="#CFD6D3" points="264.8,118.2 300.7,113.2 308.5,136 252.4,137.1      "/>
+        <polygon id="ear-right" fill="#CFD6D3" points="241.3,184.9 245.6,179.5 245.6,196.5 241.2,196.5      "/>
+        <polygon id="ear-left" fill="#CFD6D3" points="312.1,179.2 315.6,183.5 316.4,196.1 312.1,196.1       "/>
+    </g>
+    <g id="feet">
+        <polygon id="left" fill="#CFD6D3" points="302.5,739.8 332.4,734.8 337.8,776 294,779.6       "/>
+        <polygon id="right" fill="#CFD6D3" points="262.7,741.2 232.8,736.2 222.2,771.1 270.1,776.8      "/>
+    </g>
+    <g id="legs">
+        <polygon id="left-ankle" fill="#CFD6D3" points="302.2,727.5 332.9,723.3 332.2,730.5 302.2,737.2         "/>
+        <polygon id="left-calf" fill="#CFD6D3" points="303,589.1 334,572.8 329,720.8 304.6,723.7        "/>
+        <polygon id="left-thigh" fill="#CFD6D3" points="285,448.8 333.3,403.6 331.9,559.4 301.1,582.6       "/>
+        <polygon id="right-thigh" fill="#CFD6D3" points="276.4,448.3 228.1,403.1 229.4,558.9 260.2,582.1        "/>
+        <polygon id="right-calf" fill="#CFD6D3" points="258.4,588.6 227.5,572.3 232.3,720.3 256.9,723.2         "/>
+        <polygon id="right-ankle" fill="#CFD6D3" points="232.4,723 256.8,726.3 259.7,736.5 232.4,731.2      "/>
+        <polygon id="pelvis" fill="#CFD6D3" points="242.1,394.6 321.9,391 289.3,441.1 273.7,441.1       "/>
+    </g>
+    <g id="torso">
+        <polygon id="chest" fill="#6DC065" points="227.8,236.8 331.9,235.7 313.5,374.4 245.6,372.5      "/>
+        <polygon id="belt" fill="#CFD6D3" points="238.4,377.5 322,378.9 318.4,387.2 239.7,387.5         "/>
+        <g id="arm-left">
+            <polygon id="arm-left-upper" fill="#6DC065" points="343,244.1 368.3,248.8 378.7,347.8 345.8,360.5           "/>
+            <polygon id="arm-left-hand" fill="#CFD6D3" points="349.3,489.8 377.7,493.1 382.4,521.2 349.4,521.2          "/>
+            <polygon id="arm-left-wrist" fill="#CFD6D3" points="351.2,479.9 374,472.8 375.7,488.8 351.2,487.1           "/>
+            <polygon id="arm-left-lower" fill="#6DC065" points="348.5,368.4 377.7,351 370.4,466.6 351.4,477.5           "/>
+        </g>
+        <g id="arm-right">
+            <polygon id="arm-right-upper" fill="#6DC065" points="218.5,243.6 193,248.3 182.7,347.3 215.7,360            "/>
+            <polygon id="arm-right-hand" fill="#CFD6D3" points="212,489.3 183.6,492.6 179.1,520.7 211.9,520.7           "/>
+            <polygon id="arm-right-wrist" fill="#CFD6D3" points="210.1,479.4 187.4,472.3 185.8,488.3 210.1,486.6            "/>
+            <polygon id="arm-right-lower" fill="#6DC065" points="212.9,367.8 183.6,350.5 190.9,466.1 210,477.1          "/>
+        </g>
+    </g>
+</g>
+<g id="menu-look">
+    <polygon id="menu-background" fill="#818991" points="169.4,772 0,792 0,0 157,12.5   "/>
+    <rect id="item2" x="8.5" y="237.7" fill="#D1D3D4" width="124.7" height="124.7"/>
+    <rect id="item1" x="8.5" y="96.9" fill="#6DC065" width="124.7" height="124.7"/>
+    <rect id="item3" x="8.5" y="379.6" fill="#D1D3D4" width="124.7" height="124.7"/>
+    <rect id="item4" x="8.5" y="517.4" fill="#D1D3D4" width="124.7" height="124.7"/>
+</g>
+</svg>
+
+
+    </body>
+</html>
