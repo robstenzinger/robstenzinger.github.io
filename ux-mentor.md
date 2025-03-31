@@ -9,7 +9,7 @@ Summary: An ongoing project to give back and honor all those who've taught me so
 Thumbnail:/images/thumb-facilitation.png
 Image:/images/example-facilitation.png
 
-#### Project: UX Mentor
+#### Project: UX Mentor, Tutor, Coach
 
 #### Client: Various
 
